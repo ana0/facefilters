@@ -1,0 +1,3 @@
+[submodule "src/openface"]
+	path = src/openface
+	url = https://github.com/cmusatyalab/openface
