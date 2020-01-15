@@ -15,7 +15,7 @@ file = os.path.join(filesDir, 'Sequence 02000.jpg')
 
 networkModel = os.path.join(openfaceModelDir, 'nn4.small2.v1.t7')
 imgDim = 96
-cuda = True
+cuda = False
 
 align = openface.AlignDlib(dlibFacePredictor)
 net = openface.TorchNeuralNet(
@@ -30,6 +30,7 @@ def loadImg(bgrImg):
         return None
     alignedFaces = []
     for box in bb:
+        print(box)
         alignedFaces.append(
             align.align(
                 imgDim,
@@ -40,12 +41,15 @@ def loadImg(bgrImg):
         raise Exception("Unable to align the frame")
     reps = []
     for alignedFace in alignedFaces:
+        print(alignedFace)
         reps.append(net.forward(alignedFace))
     return (reps)
 
 def run():
     img = cv2.imread(file, 0)
-    loadImg(img)
+    loaded = loadImg(img)
+    print("Loaded")
+    print(len(loaded))
 
 if __name__ == "__main__":
     run()
