@@ -3,3 +3,6 @@ blobframes/
 facemeltframes/
 liquifiesframes/
 *.jpg
+sketch/assets/p5.min.js
+*.png
+*.PNG

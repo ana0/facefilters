@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw
 
 fileDir = os.path.dirname(os.path.realpath(__file__))
 modelDir = os.path.join(fileDir, 'openface', 'models')
-filesDir = os.path.join(fileDir, 'liquifiesframes')
+filesDir = os.path.join(fileDir, 'facefilters')
 dlibModelDir = os.path.join(modelDir, 'dlib')
 openfaceModelDir = os.path.join(modelDir, 'openface')
 dlibFacePredictor = os.path.join(
@@ -43,7 +43,7 @@ def loadImg(bgrImg, filename):
     for box in bb:
         expanded = expandBB(box)
         draw = ImageDraw.Draw(pil_im)
-        draw.line(expanded, fill=(0,255,0), width=5)
+        draw.line(expanded, fill=(0,255,0), width=8)
         pil_im.save(filename)
     #     alignedFaces.append(
     #         align.align(
