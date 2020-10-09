@@ -1,30 +1,20 @@
 let img;
 let centre_x = 50;
 let centre_y = 50;
-let radius = 20;
+let radius = 200;
 let r = 255;
 let g = 255;
 let b = 255;
 let a = 255;
-let colour = { r, b, g, a}
-
-function isInCircle(x, y, radius) {
-  // let dx = x-centre_x
-  // let dy = y-centre_y
-  // if (dx>r) return false
-  // if (dy>r) return false
-  // if (dx + dy <= r) return false
-  // const x2 = dx^2
-  // const y2 = dy^2
-  // const r2 = radius^2
-  // dx^2 + dy^2 <= R^2
-  const dist = Math.sqrt(((centre_x - x) ** 2) + ((centre_y - y) ** 2))
-  //if (dx^2 + dy^2 <= radius^2) return true
-  return dist <= radius
-}
+let colour = { r, b, g, a};
 
 function preload() {
-  img = loadImage('assets/102599.jpg');
+  img = loadImage('assets/headref1.jpg');
+}
+
+function isOnCircle(x, y, radius) {
+  const dist = Math.sqrt(((centre_x - x) ** 2) + ((centre_y - y) ** 2))
+  return dist + 1 >= radius && dist -1 <= radius
 }
 
 function setAtXY(x, y, colour) {
@@ -40,19 +30,84 @@ function setAtXY(x, y, colour) {
   }
 }
 
-function setup() {
-  console.log('setup')
-  image(img, 0, 0, width, height);
-  loadPixels();
+function getAtXY(x, y) {
+  const colours = [];
+  let d = pixelDensity();
+  for (let i = 0; i < d; i++) {
+    for (let j = 0; j < d; j++) {
+      index = 4 * ((y * d + j) * width * d + (x * d + i));
+      const colour = {}
+      colour.r = pixels[index];
+      colour.g = pixels[index+1];
+      colour.b = pixels[index+2];
+      colour.a = pixels[index+3];
+      colours.push(colour);
+    }
+  }
+  return colours;
+}
+
+function drawCircle(radius) {
   for (let x = 0; x < width; x++) {
     for (let y = 0; y < height; y++) {
-      const isIn = isInCircle(x, y, radius)
+      const isIn = isOnCircle(x, y, radius)
       if (isIn) { 
         setAtXY(x, y, colour) 
       }
     }
   }
   updatePixels();
+}
+
+function drawCircle(radius) {
+  for (let x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+      const isIn = isOnCircle(x, y, radius)
+      if (isIn) {
+        const pixel = getInsideOfXY(x, y)
+        const colour = getAtXY(pixel.x, pixel.y)[0] 
+        setAtXY(x, y, colour) 
+      }
+    }
+  }
+  updatePixels();
+}
+
+function getInsideOfXY(x, y) {
+  const pixel = {};
+  if (x > centre_x) {
+    pixel.x = x - 1
+  } else {
+    pixel.x = x + 1
+  }
+  if (y > centre_y) { 
+    pixel.y = y - 1
+  } else {
+    pixel.y = y + 1
+  }
+  return pixel;
+}
+
+function iterativeDrawCircle() {
+  for (let i = radius; i >= 0; i--) {
+    drawCircle(i)
+  }
+}
+
+function mouseClicked() {
+  centre_x = mouseX
+  centre_y = mouseY
+  iterativeDrawCircle()
+  const xy = getAtXY(centre_x, centre_y)
+  
+  console.log(xy)
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight)
+  image(img, 0, 0);
+  loadPixels();
+  let d = pixelDensity();
 }
 
 // function draw() {
