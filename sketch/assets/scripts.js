@@ -73,19 +73,48 @@ function drawCircle(radius) {
   updatePixels();
 }
 
+// function getInsideOfXY(x, y) {
+//   const pixel = {};
+//   if (x > centre_x) {
+//     pixel.x = x - 1
+//   } else {
+//     pixel.x = x + 1
+//   }
+//   if (y > centre_y) { 
+//     pixel.y = y - 1
+//   } else {
+//     pixel.y = y + 1
+//   }
+//   return pixel;
+// }
+
 function getInsideOfXY(x, y) {
+  const deltay = y - centre_y;
+  const deltax = x - centre_x;
+  const slope = deltax/deltay;
+  let travel;
   const pixel = {};
-  if (x > centre_x) {
-    pixel.x = x - 1
+  if (deltax > deltay) {
+    travel = {
+      x: deltax > 0 ? 1 : (deltax == 0 ? 0 : -1),
+      y: deltay == 0 ? 0 : Math.floor(1/(deltax/deltay)),
+    }  
+  } else if (deltay > deltax) {
+    travel = {
+      x: deltax == 0 ? 0 : Math.floor(1/(deltay/deltax)),
+      y: deltay > 0 ? 1 : (deltay == 0 ? 0 : -1),
+    }
   } else {
-    pixel.x = x + 1
+    travel = {
+      x: deltax > 0 ? 1 : (deltax == 0 ? 0 : -1),
+      y: deltay > 0 ? 1 : (deltay == 0 ? 0 : -1),
+    }
   }
-  if (y > centre_y) { 
-    pixel.y = y - 1
-  } else {
-    pixel.y = y + 1
+  //console.log(travel)
+  return {
+    x: x - travel.x,
+    y: y - travel.y,
   }
-  return pixel;
 }
 
 function iterativeDrawCircle() {
