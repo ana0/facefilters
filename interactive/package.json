@@ -1,0 +1,18 @@
+{
+  "name": "facefilters-interactive",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "./node_modules/.bin/shader-reload-cli index.js:bundle.js --cors -- -t"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tensorflow-models/facemesh": "0.0.4",
+    "@tensorflow/tfjs-converter": "^2.6.0",
+    "@tensorflow/tfjs-core": "^2.6.0",
+    "shader-reload-cli": "^1.0.0",
+    "three": "^0.121.1"
+  }
+}

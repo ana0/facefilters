@@ -2,6 +2,7 @@ venv/
 blobframes/
 facemeltframes/
 liquifiesframes/
+interactive/node_modules/*
 *.jpg
 sketch/assets/p5.min.js
 *.png
