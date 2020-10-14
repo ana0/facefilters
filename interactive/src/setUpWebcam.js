@@ -1,7 +1,6 @@
 let facemesh = require("@tensorflow-models/facemesh");
 let tf = require("@tensorflow/tfjs-core");
 let tfbe = require("@tensorflow/tfjs-backend-cpu");
-let THREE = require("three");
 
 let model;
 let video = null;
@@ -21,7 +20,9 @@ async function predictionLoop() {
   // Pass in a video stream (or an image, canvas, or 3D tensor) to obtain an
   // array of detected faces from the MediaPipe graph.
   const predictions = await model.estimateFaces(video);
-
+  // console.log(tf.backend());
+  // console.log(model);
+  // console.log(facemesh);
   if (predictions.length > 0) {
     for (let i = 0; i < predictions.length; i++) {
       keypoints = predictions[i].annotations;
@@ -42,15 +43,14 @@ function getKeyPoints() {
   }
 }
 loadModel();
-
 function setupWebcam(options) {
   const regl = options.regl;
 
   function startup() {
-    video = document.createElement("video");
+    video = document.getElementById("video");
     let startbutton = document.getElementById("start");
-    // let paint = document.getElementById("paint");
-    // let target = document.getElementById("target");
+    let paint = document.getElementById("paint");
+    let target = document.getElementById("target");
     var trackingStarted = false;
 
     function tryGetUserMedia() {
@@ -62,7 +62,6 @@ function setupWebcam(options) {
         })
         .then(gumSuccess)
         .catch(e => {
-          console.log(e)
           console.log("initial gum failed");
         });
       // video.play();
@@ -85,6 +84,7 @@ function setupWebcam(options) {
       }
       video.onloadedmetadata = function() {
         console.log("metadata loaded");
+        console.log(video)
         const webcam = regl.texture(video);
 
         const { videoWidth, videoHeight } = video;

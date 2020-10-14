@@ -28,10 +28,9 @@ function init() {
   var material = new THREE.MeshBasicMaterial( { map: texture } );
 
 
-    var mesh = new THREE.Mesh( geometry, material );
-    mesh.position = new THREE.Vector3( 5, 6, 7 );
-    // mesh.lookAt( camera.position );
-    scene.add( mesh );
+  var mesh = new THREE.Mesh( geometry, material );
+  mesh.position = new THREE.Vector3( 5, 6, 7 );
+  scene.add( mesh );
 
   loadModel();
 
@@ -54,7 +53,9 @@ function init() {
 
       video.srcObject = stream;
       video.play();
-      predictionLoop(video);
+      video.onloadedmetadata = () => {
+        predictionLoop();
+      }
 
     } ).catch( function ( error ) {
 
@@ -67,6 +68,8 @@ function init() {
     console.error( 'MediaDevices interface not available.' );
 
   }
+
+  //renderer.render( scene, camera );
 
 }
 

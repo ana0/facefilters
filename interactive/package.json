@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/shader-reload-cli index.js:bundle.js --cors -- -t"
+    "start": "./node_modules/.bin/shader-reload-cli index.js:bundle.js --cors -- -t [ brfs ]"
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +13,12 @@
     "@tensorflow/tfjs-backend-cpu": "^2.6.0",
     "@tensorflow/tfjs-converter": "^2.6.0",
     "@tensorflow/tfjs-core": "^2.6.0",
+    "brfs": "^2.0.2",
+    "glslify": "^7.1.1",
+    "hull.js": "^1.0.0",
+    "path": "^0.12.7",
+    "regl": "^2.0.1",
+    "shader-reload": "^2.0.1",
     "shader-reload-cli": "^1.0.0",
     "three": "^0.121.1"
   }

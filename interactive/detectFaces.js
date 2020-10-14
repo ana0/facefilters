@@ -3,13 +3,16 @@ let tf = require("@tensorflow/tfjs-core");
 let tfbe = require("@tensorflow/tfjs-backend-cpu");
 
 let model;
+let video;
 
 async function loadModel() {
   // Load the MediaPipe facemesh model.
   model = await facemesh.load({ maxFaces: 1 });
+  video = document.getElementById( 'video' );
 }
 
-async function predictionLoop(video) {
+async function predictionLoop() {
+  console.log(video)
   if (!model || !video) {
     window.requestAnimationFrame(predictionLoop);
 
@@ -24,7 +27,7 @@ async function predictionLoop(video) {
     for (let i = 0; i < predictions.length; i++) {
       keypoints = predictions[i].annotations;
       dirty = true;
-      // console.log(keypoints);
+      console.log(keypoints);
       // keypoints = predictions[i].scaledMesh;
     }
   }
