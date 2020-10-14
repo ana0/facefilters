@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@tensorflow-models/facemesh": "0.0.4",
+    "@tensorflow/tfjs-backend-cpu": "^2.6.0",
     "@tensorflow/tfjs-converter": "^2.6.0",
     "@tensorflow/tfjs-core": "^2.6.0",
     "shader-reload-cli": "^1.0.0",
