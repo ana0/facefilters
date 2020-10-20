@@ -55,7 +55,6 @@ function setupWebcam(options) {
 
     function tryGetUserMedia() {
       navigator.mediaDevices
-        // .getDisplayMedia({
         .getUserMedia({
           video: true,
           audio: false
@@ -92,11 +91,11 @@ function setupWebcam(options) {
         var w = videoWidth;
         var h = videoHeight;
         video.height = h;
-        video.width = w;
+        video.width = h*2;
         paint.height = h;
-        paint.width = w;
+        paint.width = h*2;
         target.height = h;
-        target.width = w;
+        target.width = h*2;
         predictionLoop();
 
         regl.frame(() => webcam.subimage(video));

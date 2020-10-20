@@ -23,15 +23,43 @@ vec3 getCam(vec2 pos) {
   float videoAspect = videoResolution.x / videoResolution.y;
 
   vec2 uvA = vec2(pos.x * targetAspect / videoAspect, pos.y);
-  //vec2 uvA = vec2(pos.x, pos.y);
-
   if (targetAspect < videoAspect) {
     uvA = vec2(pos.x, pos.y * videoAspect / targetAspect);
   }
-  //vec2 webcamCoord = (uvA) / 2.0 + vec2(0.5);
-  vec2 webcamCoord = (uvA) / 2.0 + vec2(1., .5);
-
+  vec2 webcamCoord = (uvA) / 2.0 + vec2(0.5);
   vec2 flipwcord = vec2(1.) - webcamCoord;
+
+  float howFar = 1.0;
+  if (uvA.x < -1.0 || uvA.x > 1.0 || uvA.y < -1.0 || uvA.y > 1.0) {
+    howFar = max(abs(uvA.x), abs(uvA.y)) - 1.0;
+    howFar = 2.0 + float(int(howFar * 5.));
+    vec2 towardsCenter = vec2(0., 0.0);
+    if (uvA.x < -1.) {
+      towardsCenter = vec2(-1.0, 0.0);
+    } else if (uvA.x > 1.) {
+      towardsCenter = vec2(1.0, 0.0);
+    } else if (uvA.y > 1.) {
+      towardsCenter = vec2(0.0, 1.0);
+    } else if (uvA.y < -1.) {
+      towardsCenter = vec2(0.0, -1.0);
+    }
+    flipwcord += towardsCenter * (1. / 8.) * howFar;
+    float blurRadius = 4.0 + howFar;
+
+    float blurAngle = sin((flipwcord.x + flipwcord.y) * 555.534) * 3.14 * 2.;
+    vec2 blurOffset = vec2(cos(blurAngle), sin(blurAngle)) * pixel * blurRadius;
+    vec3 color = texture2D(camTex, flipwcord + blurOffset).rgb / 3.;
+
+    blurAngle += 2.0;
+    blurOffset = vec2(cos(blurAngle), sin(blurAngle)) * pixel * blurRadius;
+    color += texture2D(camTex, flipwcord + blurOffset).rgb / 3.;
+
+    blurAngle += 2.0;
+    blurOffset = vec2(cos(blurAngle), sin(blurAngle)) * pixel * blurRadius;
+    color += texture2D(camTex, flipwcord + blurOffset).rgb / 3.;
+
+    return color;
+  }
 
   return texture2D(camTex, flipwcord).rgb;
 }

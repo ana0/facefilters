@@ -4,6 +4,7 @@ let shaders = require("./src/pack.shaders.js");
 const regl = require("regl")("#target", { pixelRatio: 0.75 });
 let fs = require("fs");
 let prefix = fs.readFileSync(__dirname + "/src/prefix.glsl").toString();
+// const regl2 = require("regl")("#target2", { pixelRatio: 0.7});
 
 const lastFrame = regl.texture();
 let knownGoodShader = shaders.fragment;
@@ -27,13 +28,23 @@ setupWebcam({
           viewportHeight
         ],
         targetAspect: () => window.innerWidth / window.innerHeight,
+        // scaledVideoResolution: ({ viewportWidth: vW, viewportHeight: vH }) => {
+        //   let i;
+        //   i =
+        //     vW / vH > videoWidth / videoHeight
+        //       ? [videoWidth * (vH / videoHeight), vH]
+        //       : [vW, videoHeight * (vW / videoWidth)];
+        //   return i;
+        // },
+
         scaledVideoResolution: ({ viewportWidth: vW, viewportHeight: vH }) => {
-          let i;
-          i =
-            vW / vH > videoWidth / videoHeight
-              ? [videoWidth * (vH / videoHeight), vH]
-              : [vW, videoHeight * (vW / videoWidth)];
-          return i;
+          // let i;
+          // i =
+          //   vW / vH > videoWidth / videoHeight
+          //     ? [videoWidth * (vH / videoHeight), vH]
+          //     : [vW, videoHeight * (vW / videoWidth)];
+          // return i;
+          return 1;
         },
         faceCenter: () =>
           convertCoordinate(faceCenter, videoWidth, videoHeight),
@@ -59,9 +70,6 @@ setupWebcam({
 
     regl.frame(function(context) {
       let keyPoints = getKeyPoints();
-      // regl.clear({
-      //   color: [0, 0, 0, 1]
-      // });
       if (keyPoints) {
         hasFace = true;
         faceCenter = keyPoints.noseTip[0];
