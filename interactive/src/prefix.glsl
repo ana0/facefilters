@@ -21,23 +21,9 @@ vec2 pixel = 1.0 / resolution;
 
 vec3 getCam(vec2 pos) {
   float videoAspect = videoResolution.x / videoResolution.y;
-
   vec2 uvA = vec2(pos.x * targetAspect / videoAspect, pos.y);
-  //vec2 uvA = vec2(pos.x, pos.y);
-
-  if (targetAspect < videoAspect) {
-    uvA = vec2(pos.x, pos.y * videoAspect / targetAspect);
-  }
-  //vec2 webcamCoord = (uvA) / 2.0 + vec2(0.5);
-  vec2 webcamCoord = (uvA) / 2.0 + vec2(1., .5);
-
+  vec2 webcamCoord = (uvA) / 2.0 + vec2(0.5);
   vec2 flipwcord = vec2(1.) - webcamCoord;
-
-  vec2 towardsRight = vec2(1.0, 0.0);
-  float howFar = 1.0;
-  howFar = max(abs(uvA.x), abs(uvA.y)) - 1.0;
-  howFar = 2.0 + float(int(howFar * 5.));
-
   return texture2D(camTex, flipwcord).rgb;
 }
 
@@ -52,9 +38,6 @@ vec3 getPrevious(vec2 pos) {
 float getFace(vec2 pos) {
   float videoAspect = videoResolution.x / videoResolution.y;
   vec2 uvA = vec2(pos.x * targetAspect / videoAspect, pos.y);
-  if ((targetAspect) < (videoResolution.x / videoResolution.y)) {
-    uvA = vec2(pos.x, pos.y * videoAspect / targetAspect);
-  }
   vec2 webcamCoord = (uvA) / 2.0 + vec2(0.5);
   vec2 flipwcord = vec2(1.) - webcamCoord;
   return texture2D(maskTex, flipwcord).b;
@@ -63,9 +46,6 @@ float getFace(vec2 pos) {
 float getEye(vec2 pos) {
   float videoAspect = videoResolution.x / videoResolution.y;
   vec2 uvA = vec2(pos.x * targetAspect / videoAspect, pos.y);
-  if ((targetAspect) < (videoResolution.x / videoResolution.y)) {
-    uvA = vec2(pos.x, pos.y * videoAspect / targetAspect);
-  }
   vec2 webcamCoord = (uvA) / 2.0 + vec2(0.5);
   vec2 flipwcord = vec2(1.) - webcamCoord;
   return texture2D(maskTex, flipwcord).g;
@@ -74,9 +54,6 @@ float getEye(vec2 pos) {
 float getMouth(vec2 pos) {
   float videoAspect = videoResolution.x / videoResolution.y;
   vec2 uvA = vec2(pos.x * targetAspect / videoAspect, pos.y);
-  if ((targetAspect) < (videoResolution.x / videoResolution.y)) {
-    uvA = vec2(pos.x, pos.y * videoAspect / targetAspect);
-  }
   vec2 webcamCoord = (uvA) / 2.0 + vec2(0.5);
   vec2 flipwcord = vec2(1.) - webcamCoord;
   return texture2D(maskTex, flipwcord).r;

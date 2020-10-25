@@ -35,10 +35,12 @@ async function predictionLoop() {
 }
 function getKeyPoints() {
   if (dirty) {
+    //console.log()
     dirty = false;
     return keypoints;
   } else {
     // console.log("saved work");
+    return keypoints;
     return false;
   }
 }
@@ -91,14 +93,12 @@ function setupWebcam(options) {
 
         const { videoWidth, videoHeight } = video;
 
-        var w = videoWidth;
+        var w = videoHeight;
         var h = videoHeight;
-        video.height = h;
-        video.width = h*2;
         paint.height = h;
-        paint.width = h*2;
+        paint.width = h*1.33;
         target1.height = h;
-        target1.width = h*2;
+        target1.width = h*1.25;
         predictionLoop();
 
         regl1.frame(() => webcam1.subimage(video));

@@ -1,36 +1,60 @@
 const { setupWebcam } = require("./src/setUpWebcam.js");
 let { paintFace } = require("./src/paint");
 let shaders = require("./src/pack.shaders.js");
-// const regl = require("regl")("#target", { pixelRatio: 0.75 });
 const multiRegl = require("./src/multi.js");
 let fs = require("fs");
 let prefix = fs.readFileSync(__dirname + "/src/prefix.glsl").toString();
-// const regl2 = require("regl")("#target2", { pixelRatio: 0.7});
 
 let knownGoodShader = shaders.fragment;
 
 const div1 = document.getElementById("target1");
-  div1.style.width = '500px'
-  div1.style.height = '500px'
-  div1.style.margin = '100px'
+div1.style.width = '500px'
+div1.style.height = '500px'
+div1.style.margin = '100px'
 const regl1 = multiRegl(div1)(div1);
 const div2 = document.getElementById("target2");
-  div2.style.width = '500px'
-  div2.style.height = '500px'
-  div2.style.margin = '100px'
-  div2.style.position = 'absolute'
-  div2.style.left = '500px'
+div2.style.width = '500px'
+div2.style.height = '500px'
+div2.style.margin = '100px'
+div2.style.position = 'absolute'
+div2.style.left = '500px'
 const regl2 = multiRegl(div2)(div2);
 
 const lastFrame1 = regl1.texture();
 const lastFrame2 = regl2.texture();
 
+const targetAspect = 1.0;
+let paintElement = document.getElementById("paint");
+let faceDetectionTexture1;
+let faceDetectionTexture2;
+let hasFace = false;
+let faceCenter = [0.5, 0.5];
+
+function convertCoordinate([fx, fy], videoWidth, videoHeight) {
+  x = fx / videoWidth;
+  y = fy / videoHeight;
+  x = 1 - x;
+  y = 1 - y;
+  x = 2 * x - 1.0;
+  y = 2 * y - 1.0;
+  let targetAspect = 1.;
+  let videoAspect = videoWidth / videoHeight;
+  let uvA_x = x / (targetAspect / videoAspect);
+  let uvA_y = y;
+  if (targetAspect < videoAspect) {
+    uvA_x = x;
+    uvA_y = y / (videoAspect / targetAspect);
+  }
+
+  return [uvA_x, uvA_y];
+}
+
 setupWebcam({
   regl1,
   regl2,
   done: (webcam1, webcam2, { videoWidth, videoHeight, getKeyPoints }) => {
-    faceDetectionTexture1 = regl1.texture(paint);
-    faceDetectionTexture2 = regl2.texture(paint);
+    faceDetectionTexture1 = regl1.texture(paintElement);
+    faceDetectionTexture2 = regl2.texture(paintElement);
     // faceDetectionTexture.resize(videoWidth, videoHeight);
 
     let drawTriangle1 = regl1({
@@ -42,26 +66,11 @@ setupWebcam({
         time: ({ time }) => time % 10000,
         hasFace: () => hasFace,
         resolution: ({ viewportWidth, viewportHeight }) => [
-          viewportWidth,
-          viewportHeight
+          500,
+          500
         ],
-        targetAspect: () => window.innerWidth / window.innerHeight,
-        // scaledVideoResolution: ({ viewportWidth: vW, viewportHeight: vH }) => {
-        //   let i;
-        //   i =
-        //     vW / vH > videoWidth / videoHeight
-        //       ? [videoWidth * (vH / videoHeight), vH]
-        //       : [vW, videoHeight * (vW / videoWidth)];
-        //   return i;
-        // },
-
+        targetAspect: () => 1, 
         scaledVideoResolution: ({ viewportWidth: vW, viewportHeight: vH }) => {
-          // let i;
-          // i =
-          //   vW / vH > videoWidth / videoHeight
-          //     ? [videoWidth * (vH / videoHeight), vH]
-          //     : [vW, videoHeight * (vW / videoWidth)];
-          // return i;
           return 1;
         },
         faceCenter: () =>
@@ -95,26 +104,11 @@ setupWebcam({
         time: ({ time }) => time % 10000,
         hasFace: () => hasFace,
         resolution: ({ viewportWidth, viewportHeight }) => [
-          viewportWidth,
-          viewportHeight
+          500,
+          500
         ],
-        targetAspect: () => window.innerWidth / window.innerHeight,
-        // scaledVideoResolution: ({ viewportWidth: vW, viewportHeight: vH }) => {
-        //   let i;
-        //   i =
-        //     vW / vH > videoWidth / videoHeight
-        //       ? [videoWidth * (vH / videoHeight), vH]
-        //       : [vW, videoHeight * (vW / videoWidth)];
-        //   return i;
-        // },
-
+        targetAspect: () => 1,//window.innerWidth / window.innerHeight,
         scaledVideoResolution: ({ viewportWidth: vW, viewportHeight: vH }) => {
-          // let i;
-          // i =
-          //   vW / vH > videoWidth / videoHeight
-          //     ? [videoWidth * (vH / videoHeight), vH]
-          //     : [vW, videoHeight * (vW / videoWidth)];
-          // return i;
           return 1;
         },
         faceCenter: () =>
@@ -141,12 +135,10 @@ setupWebcam({
 
     regl1.frame(function(context) {
       let keyPoints = getKeyPoints();
+      console.log('regl1 keyPoints', keyPoints)
       if (keyPoints) {
         hasFace = true;
         faceCenter = keyPoints.noseTip[0];
-        // console.log(faceCenter[0]);
-        // console.log(keyPoints.midwayBetweenEyes);
-        // debugger;
         ctx = paintFace(keyPoints);
         faceDetectionTexture1.subimage(ctx);
       }
@@ -162,17 +154,18 @@ setupWebcam({
       }
       knownGoodShader = shaders.fragment;
 
-      lastFrame({
+      lastFrame1({
         copy: true
       });
     });
 
     regl2.frame(function(context) {
       let keyPoints = getKeyPoints();
+      console.log('regl2 keyPoints', keyPoints)
       if (keyPoints) {
         hasFace = true;
         faceCenter = keyPoints.noseTip[0];
-        // console.log(faceCenter[0]);
+        console.log(faceCenter[0]);
         // console.log(keyPoints.midwayBetweenEyes);
         // debugger;
         ctx = paintFace(keyPoints);
@@ -190,7 +183,7 @@ setupWebcam({
       }
       knownGoodShader = shaders.fragment;
 
-      lastFrame({
+      lastFrame2({
         copy: true
       });
     });
