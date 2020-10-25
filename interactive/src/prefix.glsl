@@ -33,6 +33,11 @@ vec3 getCam(vec2 pos) {
 
   vec2 flipwcord = vec2(1.) - webcamCoord;
 
+  vec2 towardsRight = vec2(1.0, 0.0);
+  float howFar = 1.0;
+  howFar = max(abs(uvA.x), abs(uvA.y)) - 1.0;
+  howFar = 2.0 + float(int(howFar * 5.));
+
   return texture2D(camTex, flipwcord).rgb;
 }
 
