@@ -20,9 +20,6 @@ async function predictionLoop() {
   // Pass in a video stream (or an image, canvas, or 3D tensor) to obtain an
   // array of detected faces from the MediaPipe graph.
   const predictions = await model.estimateFaces(video);
-  // console.log(tf.backend());
-  // console.log(model);
-  // console.log(facemesh);
   if (predictions.length > 0) {
     for (let i = 0; i < predictions.length; i++) {
       keypoints = predictions[i].annotations;
@@ -34,17 +31,11 @@ async function predictionLoop() {
   window.requestAnimationFrame(predictionLoop);
 }
 function getKeyPoints() {
-  if (dirty) {
-    //console.log()
-    dirty = false;
-    return keypoints;
-  } else {
-    // console.log("saved work");
-    return keypoints;
-    return false;
-  }
+  return keypoints;
 }
+
 loadModel();
+
 function setupWebcam(options) {
   const regl1 = options.regl1;
   const regl2 = options.regl2;
@@ -67,16 +58,13 @@ function setupWebcam(options) {
         .catch(e => {
           console.log("initial gum failed");
         });
-      // video.play();
       startbutton.hidden = true;
     }
 
     tryGetUserMedia();
 
     startbutton.onclick = function() {
-      console.log("play!");
       tryGetUserMedia();
-      // startVideo();
     };
 
     function gumSuccess(stream) {
@@ -86,19 +74,17 @@ function setupWebcam(options) {
         video.src = window.URL && window.URL.createObjectURL(stream);
       }
       video.onloadedmetadata = function() {
-        console.log("metadata loaded");
-        console.log(regl1)
         const webcam1 = regl1.texture(video);
         const webcam2 = regl2.texture(video);
 
         const { videoWidth, videoHeight } = video;
 
-        var w = videoHeight;
+        var w = videoWidth;
         var h = videoHeight;
         paint.height = h;
         paint.width = h*1.33;
         target1.height = h;
-        target1.width = h*1.25;
+        target1.width = h*1.33;
         predictionLoop();
 
         regl1.frame(() => webcam1.subimage(video));

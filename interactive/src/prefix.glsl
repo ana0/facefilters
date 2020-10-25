@@ -11,7 +11,6 @@ uniform vec2 rightEye;
 uniform sampler2D camTex;
 uniform sampler2D maskTex;
 uniform sampler2D previousTex;
-// SPACER
 vec2 pixel = 1.0 / resolution;
 
 #define PI 3.1415926538

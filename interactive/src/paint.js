@@ -1,10 +1,10 @@
-// let { TRIANGULATION } = require("./triangulation");
 let hull = require("hull.js");
 let canvas = document.getElementById("paint");
 
 ctx = canvas.getContext("2d");
 ctx.translate(canvas.width, 0);
 ctx.scale(-1, 1);
+
 function averagePoints(points) {
   let x = 0;
   let y = 0;
@@ -16,6 +16,7 @@ function averagePoints(points) {
   y /= points.length;
   return [x, y];
 }
+
 function drawShape(points) {
   ctx.beginPath();
 
@@ -34,6 +35,7 @@ function drawShape(points) {
   ctx.stroke();
   ctx.fill();
 }
+
 function paintFace(annotations) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.lineCap = "round";
@@ -134,6 +136,7 @@ function paintFace(annotations) {
 
   return ctx;
 }
+
 module.exports = { paintFace };
 
 /*
