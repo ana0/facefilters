@@ -44,13 +44,15 @@ function getKeyPoints() {
 }
 loadModel();
 function setupWebcam(options) {
-  const regl = options.regl;
+  const regl1 = options.regl1;
+  const regl2 = options.regl2;
 
   function startup() {
     video = document.getElementById("video");
     let startbutton = document.getElementById("start");
     let paint = document.getElementById("paint");
-    let target = document.getElementById("target");
+    let target1 = document.getElementById("target1");
+    let target2 = document.getElementById("target2");
     var trackingStarted = false;
 
     function tryGetUserMedia() {
@@ -83,8 +85,9 @@ function setupWebcam(options) {
       }
       video.onloadedmetadata = function() {
         console.log("metadata loaded");
-        console.log(video)
-        const webcam = regl.texture(video);
+        console.log(regl1)
+        const webcam1 = regl1.texture(video);
+        const webcam2 = regl2.texture(video);
 
         const { videoWidth, videoHeight } = video;
 
@@ -94,12 +97,13 @@ function setupWebcam(options) {
         video.width = h*2;
         paint.height = h;
         paint.width = h*2;
-        target.height = h;
-        target.width = h*2;
+        target1.height = h;
+        target1.width = h*2;
         predictionLoop();
 
-        regl.frame(() => webcam.subimage(video));
-        options.done(webcam, {
+        regl1.frame(() => webcam1.subimage(video));
+        regl2.frame(() => webcam2.subimage(video));
+        options.done(webcam1, webcam2, {
           videoWidth,
           videoHeight,
           getKeyPoints
