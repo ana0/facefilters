@@ -10,13 +10,12 @@ uniform vec2 leftEye;
 uniform vec2 rightEye;
 uniform sampler2D camTex;
 uniform sampler2D maskTex;
+uniform sampler2D glacierTex;
 uniform sampler2D previousTex;
 vec2 pixel = 1.0 / resolution;
 
 #define PI 3.1415926538
 #define TAU 6.283185307
-
-// SPACER
 
 vec3 getCam(vec2 pos) {
   float videoAspect = videoResolution.x / videoResolution.y;
@@ -26,11 +25,16 @@ vec3 getCam(vec2 pos) {
   return texture2D(camTex, flipwcord).rgb;
 }
 
+vec3 getGlacier(vec2 pos) {
+  vec2 backCoord = (pos / 2.0) + vec2(0.5);
+  vec2 flipwcord = vec2(1.) - backCoord;
+  return texture2D(glacierTex, flipwcord).rgb;
+}
+
 vec3 getPrevious(vec2 pos) {
   vec2 backCoord = (pos / 2.0) + vec2(0.5);
   return texture2D(previousTex, backCoord).rgb;
 }
-// SPACER
 
 // Access Facial Feature Masks
 

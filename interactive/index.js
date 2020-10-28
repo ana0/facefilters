@@ -10,6 +10,8 @@ let knownGoodShader = shaders.fragment;
 const div1 = document.getElementById("target1");
 div1.style.width = `${window.innerWidth/2}px`
 div1.style.height = `${window.innerWidth/2}px`
+div1.style.left = '0px';
+div1.style.float = 'absolute'
 const regl1 = multiRegl()(div1);
 const div2 = document.getElementById("target2");
 div2.style.width = `${window.innerWidth/2}px`
@@ -47,6 +49,9 @@ function convertCoordinate([fx, fy], videoWidth, videoHeight) {
   return [uvA_x, uvA_y];
 }
 
+var image = document.getElementById("glacier");
+
+
 setupWebcam({
   regl1,
   regl2,
@@ -54,11 +59,16 @@ setupWebcam({
     faceDetectionTexture1 = regl1.texture(paintElement);
     faceDetectionTexture2 = regl2.texture(paintElement);
 
+    const glacierTexture2 = regl2.texture(image);
+    const glacierTexture1 = regl1.texture(image);
+
+
     let drawTriangle1 = regl1({
       uniforms: {
         camTex: webcam1,
         previousTex: lastFrame,
         maskTex: faceDetectionTexture1,
+        glacierTex: glacierTexture1,
         videoResolution: [videoWidth, videoHeight],
         time: ({ time }) => time % 10000,
         hasFace: () => hasFace,
@@ -97,6 +107,7 @@ setupWebcam({
         camTex: webcam2,
         previousTex: lastFrame,
         maskTex: faceDetectionTexture2,
+        glacierTex: glacierTexture2,
         videoResolution: [videoWidth, videoHeight],
         time: ({ time }) => time % 10000,
         hasFace: () => hasFace,

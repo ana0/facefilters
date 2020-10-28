@@ -11,29 +11,29 @@ module.exports = function createMultiplexor (inputs) {
   var pixelRatio = reglInput.pixelRatio || window.devicePixelRatio
   reglInput.pixelRatio = pixelRatio
 
-  var canvas = document.createElement('canvas')
-  var canvasStyle = canvas.style
-  canvasStyle.position = 'fixed'
-  canvasStyle.left =
-  canvasStyle.top = '0px'
-  canvasStyle.width =
-  canvasStyle.height = '100%'
-  canvasStyle['pointer-events'] = 'none'
-  canvasStyle['touch-action'] = 'none'
-  canvasStyle['z-index'] = '1000'
+  // var canvas = document.createElement('canvas')
+  // var canvasStyle = canvas.style
+  // canvasStyle.position = 'fixed'
+  // canvasStyle.left =
+  // canvasStyle.top = '0px'
+  // canvasStyle.width =
+  // canvasStyle.height = '100%'
+  // canvasStyle['pointer-events'] = 'none'
+  // canvasStyle['touch-action'] = 'none'
+  // canvasStyle['z-index'] = '1000'
 
   function resize () {
-    canvas.width = pixelRatio * window.innerWidth
-    canvas.height = pixelRatio * window.innerHeight
+    // canvas.width = pixelRatio * window.innerWidth
+    // canvas.height = pixelRatio * window.innerHeight
   }
 
-  resize()
+  // resize()
 
   window.addEventListener('resize', resize, false)
 
-  document.body.appendChild(canvas)
+  // document.body.appendChild(canvas)
 
-  reglInput.canvas = canvas
+  // reglInput.canvas = canvas
   delete reglInput.gl
   delete reglInput.container
 
@@ -48,6 +48,7 @@ module.exports = function createMultiplexor (inputs) {
   }
 
   function createSubContext (input) {
+    console.log(input)
     var element
     if (typeof input === 'object' && input) {
       if (typeof input.getBoundingClientRect === 'function') {
@@ -170,6 +171,6 @@ module.exports = function createMultiplexor (inputs) {
     }
   })
 
-  createSubContext.canvas = canvas
+  //createSubContext.canvas = canvas
   return createSubContext
 }
