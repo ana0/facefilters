@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw
 
 fileDir = os.path.dirname(os.path.realpath(__file__))
 modelDir = os.path.join(fileDir, 'openface', 'models')
-filesDir = os.path.join(fileDir, 'facefilters')
+filesDir = os.path.join(fileDir, '4-frames')
 dlibModelDir = os.path.join(modelDir, 'dlib')
 openfaceModelDir = os.path.join(modelDir, 'openface')
 dlibFacePredictor = os.path.join(

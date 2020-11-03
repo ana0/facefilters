@@ -11,16 +11,6 @@ module.exports = function createMultiplexor (inputs) {
   var pixelRatio = reglInput.pixelRatio || window.devicePixelRatio
   reglInput.pixelRatio = pixelRatio
 
-  // var canvas = document.createElement('canvas')
-  // var canvasStyle = canvas.style
-  // canvasStyle.position = 'fixed'
-  // canvasStyle.left =
-  // canvasStyle.top = '0px'
-  // canvasStyle.width =
-  // canvasStyle.height = '100%'
-  // canvasStyle['pointer-events'] = 'none'
-  // canvasStyle['touch-action'] = 'none'
-  // canvasStyle['z-index'] = '1000'
 
   function resize () {
     // canvas.width = pixelRatio * window.innerWidth
@@ -31,9 +21,6 @@ module.exports = function createMultiplexor (inputs) {
 
   window.addEventListener('resize', resize, false)
 
-  // document.body.appendChild(canvas)
-
-  // reglInput.canvas = canvas
   delete reglInput.gl
   delete reglInput.container
 
@@ -171,6 +158,5 @@ module.exports = function createMultiplexor (inputs) {
     }
   })
 
-  //createSubContext.canvas = canvas
   return createSubContext
 }

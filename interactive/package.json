@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/shader-reload-cli index.js:bundle.js --cors -- -t [ brfs ]"
+    "start": "./node_modules/.bin/shader-reload-cli index.js:bundle.js --cors -- -t [ brfs ]",
+    "build": "./node_modules/.bin/browserify  -t brfs -t glslify -g uglifyify index.js -o build/bundle.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "regl": "^2.0.1",
     "shader-reload": "^2.0.1",
     "shader-reload-cli": "^1.0.0",
-    "three": "^0.121.1"
+    "three": "^0.121.1",
+    "uglifyify": "^5.0.2"
   }
 }
