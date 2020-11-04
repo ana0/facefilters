@@ -42,13 +42,6 @@ function convertCoordinate([fx, fy], videoWidth, videoHeight) {
 
 var image = document.getElementById("glacier");
 
-var image = new Image()
-image.src = './src/glacier.jpg'
-// image.onload = function () {
-//   var imageTexture = regl.texture(image)
-// }
-
-
 setupWebcam({
   regl1,
   regl2,

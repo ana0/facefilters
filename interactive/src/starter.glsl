@@ -144,33 +144,23 @@ void main() {
   float eye = getEye(uv);
   float mouth = getMouth(uv);
 
-  vec3 color = getGlacier(uv);
+  vec3 color;
 
-  //vec2 ed = 3. * pixel;
-  //float edge = dot((getCam(uv) * 4. - getCam(uv + vec2(ed.x, 0)) -
-  //                  getCam(uv + vec2(-ed.x, 0)) - getCam(uv + vec2(0., ed.y)) -
-  //                  getCam(uv + vec2(0, -ed.y)))
-  //                     .rgb,
-  //                 vec3(0.333));
-
-
-
-  //cam = vec3(0.7, .8, 1.0) * dot(cam, vec3(0.333));
-
-  //color = (edge + 0.1) * cam * 15.;
-  vec3 edge = sobel(step/resolution.x, step/resolution.y, uv);
-  edge = (edge + 0.1) * cam * 15.;
+  cam = vec3(0.7, 0.8, 1.) * dot(cam, vec3(0.55));
 
   if (face < 0.2) {
-    color = mix(color, cam, 0.8);
+    // background
+    vec3 edge = sobel(step/resolution.x, step/resolution.y, uv);
+    edge = edge * cam * 10.;
+    color = mix(edge, cam, 0.8);
   }
 
   if (face > 0.2) {
-    //cam = vec3(0.7, .8, 1.0) * dot(cam, vec3(0.333));
-
-    //color = (edge + 0.1) * cam * 15.;
-    //color = mix(color, cam, 0.5);
-    color = mix(color, glac, 0.8);
+    // face
+    vec3 edge = sobel(step/resolution.x*2.5, step/resolution.y*2.5, uv);
+    edge = edge * cam * 10.;
+    color = mix(edge, cam, 0.4);
+    color = mix(color, glac, 0.9);
   }
 
   if (eye > 0.3) {
