@@ -8,19 +8,10 @@ let prefix = fs.readFileSync(__dirname + "/src/prefix.glsl").toString();
 let knownGoodShader = shaders.fragment;
 
 const div1 = document.getElementById("target1");
-div1.style.width = `${window.innerWidth/2}px`
-div1.style.height = `${window.innerWidth/2}px`
-div1.style.left = '0px';
-div1.style.float = 'absolute'
 const regl1 = multiRegl()(div1);
 const div2 = document.getElementById("target2");
-div2.style.width = `${window.innerWidth/2}px`
-div2.style.height = `${window.innerWidth/2}px`
-div2.style.position = 'absolute'
-
 const regl2 = multiRegl()(div2);
 
-//const lastFrame1 = regl1.texture();
 const lastFrame = regl2.texture();
 
 const targetAspect = 1.0;
@@ -50,6 +41,12 @@ function convertCoordinate([fx, fy], videoWidth, videoHeight) {
 }
 
 var image = document.getElementById("glacier");
+
+var image = new Image()
+image.src = './src/glacier.jpg'
+// image.onload = function () {
+//   var imageTexture = regl.texture(image)
+// }
 
 
 setupWebcam({
@@ -88,7 +85,7 @@ setupWebcam({
           convertCoordinate(window.rightEye, videoWidth, videoHeight)
       },
 
-      frag: () => (hasFace ? prefix + shaders.fragment : loadingShader),
+      frag: () => (prefix + shaders.fragment),
       vert: () => shaders.vertex,
       attributes: {
         // Full screen triangle
@@ -127,7 +124,7 @@ setupWebcam({
           convertCoordinate(window.rightEye, videoWidth, videoHeight)
       },
 
-      frag: () => (hasFace ? prefix + shaders.fragment : loadingShader),
+      frag: () => (prefix + shaders.fragment),
       vert: () => shaders.vertex,
       attributes: {
         // Full screen triangle

@@ -2,19 +2,62 @@
 <html lang="en">
   <head>
     <title>Boilerplate</title>
-    <style></style>
+    <style>
+      body {
+        overflow: hidden;
+      }
+
+      #target1 {
+        left: 0px;
+        width: calc(100vw / 2);
+        height: calc(100vw / 2);
+      }
+
+      #target2 {
+        position: absolute;
+        width: calc(100vw / 2);
+        height: calc(100vw / 2);
+      }
+
+      #paint {
+        display: none;
+      }
+
+/*      #glacier {
+        display: none;
+      }*/
+
+      #video {
+        display: none;
+      }
+
+      #start {
+        left: 50%;
+        position: fixed;
+        width: 2em;
+        z-index: 100;
+        bottom: 5em;
+        transform: translateX(-50%);
+      }
+    </style>
   </head>
 
   <body>
-    <video id="video" style="display:none" autoplay playsinline></video>
+    <video id="video" autoplay playsinline></video>
     <button id="start"></button>
-    <canvas id="paint" style="display:none"></canvas>
+    <canvas id="paint"></canvas>
     <canvas id="target1"></canvas>
     <canvas id="target2"></canvas>
 
     <img id="glacier" src="src/glacier.jpg">
 
     <script src="bundle.js"></script>
+    <script type="text/javascript">
+      let startbutton = document.getElementById("start");
+      startbutton.onclick = function() {
+       tryGetUserMedia();
+      };
+    </script>
 
   </body>
 </html>

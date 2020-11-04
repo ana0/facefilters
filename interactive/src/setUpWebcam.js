@@ -4,6 +4,8 @@ let tfbe = require("@tensorflow/tfjs-backend-cpu");
 
 let model;
 let video = null;
+let facefilters = false;
+
 async function loadModel() {
   // Load the MediaPipe facemesh model.
   model = await facemesh.load({ maxFaces: 1 });
@@ -58,13 +60,23 @@ function setupWebcam(options) {
         .catch(e => {
           console.log("initial gum failed");
         });
-      startbutton.hidden = true;
+      facefilters = true;
+      target1.hidden = false;
+      target2.hidden = false;
     }
 
-    tryGetUserMedia();
+    function hideUserMedia() {
+      target1.hidden = true;
+      target2.hidden = true;
+      facefilters = false;
+    }
 
     startbutton.onclick = function() {
-      tryGetUserMedia();
+      if (!facefilters) {
+        tryGetUserMedia();
+      } else {
+        hideUserMedia();
+      }
     };
 
     function gumSuccess(stream) {
