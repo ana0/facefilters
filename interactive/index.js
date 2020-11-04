@@ -2,8 +2,8 @@ const { setupWebcam } = require("./src/setUpWebcam.js");
 let { paintFace } = require("./src/paint");
 let shaders = require("./src/pack.shaders.js");
 const multiRegl = require("./src/multi.js");
-let fs = require("fs");
-let prefix = fs.readFileSync(__dirname + "/src/prefix.glsl").toString();
+// let fs = require("fs");
+// let prefix = fs.readFileSync(__dirname + "/src/prefix.glsl").toString();
 
 let knownGoodShader = shaders.fragment;
 
@@ -85,7 +85,7 @@ setupWebcam({
           convertCoordinate(window.rightEye, videoWidth, videoHeight)
       },
 
-      frag: () => (prefix + shaders.fragment),
+      frag: () => (shaders.fragment),
       vert: () => shaders.vertex,
       attributes: {
         // Full screen triangle
@@ -124,7 +124,7 @@ setupWebcam({
           convertCoordinate(window.rightEye, videoWidth, videoHeight)
       },
 
-      frag: () => (prefix + shaders.fragment),
+      frag: () => (shaders.fragment),
       vert: () => shaders.vertex,
       attributes: {
         // Full screen triangle
