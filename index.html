@@ -2,7 +2,44 @@
 <html lang="en">
   <head>
     <title>Boilerplate</title>
-    <style></style>
+    <style>
+      body {
+        overflow: hidden;
+      }
+
+      #target1 {
+        left: 0px;
+        width: calc(100vw / 2);
+        height: calc(100vw / 2);
+      }
+
+      #target2 {
+        position: absolute;
+        width: calc(100vw / 2);
+        height: calc(100vw / 2);
+      }
+
+      #paint {
+        display: none;
+      }
+
+      #glacier {
+        display: none;
+      }
+
+      #video {
+        display: none;
+      }
+
+      #start {
+        left: 50%;
+        position: fixed;
+        width: 2em;
+        z-index: 100;
+        bottom: 5em;
+        transform: translateX(-50%);
+      }
+    </style>
   </head>
 
   <body>
@@ -12,6 +49,7 @@
     <canvas id="paint" style="display:none"></canvas>
     <canvas id="target1"></canvas>
     <canvas id="target2"></canvas>
+    <img src="/src/glacier.jpg" id="glacier"></canvas>
     <script src="https://cdn.jsdelivr.net/gh/ana0/facefilters@latest/interactive/build/bundle.js"></script>
   </body>
 </html>
