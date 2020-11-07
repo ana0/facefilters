@@ -26,8 +26,6 @@ async function predictionLoop() {
     for (let i = 0; i < predictions.length; i++) {
       keypoints = predictions[i].annotations;
       dirty = true;
-      // console.log(keypoints);
-      // keypoints = predictions[i].scaledMesh;
     }
   }
   window.requestAnimationFrame(predictionLoop);
@@ -63,7 +61,10 @@ function setupWebcam(options) {
       facefilters = true;
       target1.hidden = false;
       target2.hidden = false;
+      startbutton.hidden = true;
     }
+
+    tryGetUserMedia()
 
     function hideUserMedia() {
       target1.hidden = true;
@@ -72,11 +73,7 @@ function setupWebcam(options) {
     }
 
     startbutton.onclick = function() {
-      if (!facefilters) {
-        tryGetUserMedia();
-      } else {
-        hideUserMedia();
-      }
+      tryGetUserMedia();
     };
 
     function gumSuccess(stream) {
@@ -108,14 +105,6 @@ function setupWebcam(options) {
         });
       };
     }
-    // function adjustVideoProportions() {
-    //   // resize overlay and video if proportions of video are not 4:3
-    //   // keep same height, just change width
-    //   debugger
-    //   var proportion = video.videoWidth/video.videoHeight;
-    //   video_width = Math.round(video_height * proportion);
-    //   video.width = video_width;
-    // }
     video.onresize = function() {
       // adjustVideoProportions();
     };
