@@ -21,7 +21,7 @@
     "regl": "^2.0.1",
     "shader-reload": "^2.0.1",
     "shader-reload-cli": "^1.0.0",
-    "three": "^0.121.1",
+    "three": "^0.125.0",
     "uglifyify": "^5.0.2"
   }
 }
